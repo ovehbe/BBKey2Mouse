@@ -1,0 +1,1027 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/primary">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_dark"
+        app:titleTextColor="@color/on_surface"
+        app:navigationIconTint="@color/on_surface" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Input Mode Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_input_mode"
+                android:textSize="14sp"
+                android:textColor="@color/accent"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="4dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:id="@+id/inputModeCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/input_mode"
+                            android:textSize="16sp"
+                            android:textColor="@color/on_surface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Choose how to control the cursor"
+                            android:textSize="12sp"
+                            android:textColor="@color/on_surface_dim"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/inputModeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Virtual Trackpad"
+                        android:textSize="14sp"
+                        android:textColor="@color/accent"
+                        android:layout_gravity="center_vertical" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Pointer Settings Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_pointer"
+                android:textSize="14sp"
+                android:textColor="@color/accent"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="4dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Pointer Speed -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="8dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/pointer_speed"
+                                android:textSize="16sp"
+                                android:textColor="@color/on_surface" />
+
+                            <TextView
+                                android:id="@+id/speedValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1.5x"
+                                android:textSize="14sp"
+                                android:textColor="@color/accent" />
+
+                        </LinearLayout>
+
+                        <SeekBar
+                            android:id="@+id/speedSlider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:progressTint="@color/accent"
+                            android:thumbTint="@color/accent" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/card_stroke"
+                        android:layout_marginVertical="8dp" />
+
+                    <!-- Pointer Size -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="8dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/pointer_size"
+                                android:textSize="16sp"
+                                android:textColor="@color/on_surface" />
+
+                            <TextView
+                                android:id="@+id/sizeValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="48px"
+                                android:textSize="14sp"
+                                android:textColor="@color/accent" />
+
+                        </LinearLayout>
+
+                        <SeekBar
+                            android:id="@+id/sizeSlider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:progressTint="@color/accent"
+                            android:thumbTint="@color/accent" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/card_stroke"
+                        android:layout_marginVertical="8dp" />
+
+                    <!-- Pointer Image -->
+                    <LinearLayout
+                        android:id="@+id/pointerImageCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="16dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/pointer_image"
+                            android:textSize="16sp"
+                            android:textColor="@color/on_surface" />
+
+                        <TextView
+                            android:id="@+id/pointerImageValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Default Arrow"
+                            android:textSize="14sp"
+                            android:textColor="@color/accent"
+                            android:layout_gravity="center_vertical" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Virtual Trackpad Section -->
+            <LinearLayout
+                android:id="@+id/virtualTrackpadSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category_virtual_trackpad"
+                    android:textSize="14sp"
+                    android:textColor="@color/accent"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="4dp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="@color/card_background"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Trackpad Color -->
+                        <LinearLayout
+                            android:id="@+id/trackpadColorCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="16dp"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/trackpad_color"
+                                android:textSize="16sp"
+                                android:textColor="@color/on_surface" />
+
+                            <View
+                                android:id="@+id/trackpadColorPreview"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@color/accent" />
+
+                            <TextView
+                                android:id="@+id/trackpadColorValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cyan"
+                                android:textSize="14sp"
+                                android:textColor="@color/accent"
+                                android:layout_gravity="center_vertical" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Trackpad Rounding -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/trackpad_rounding"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:id="@+id/trackpadRoundingValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="16px"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/accent" />
+
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/trackpadRoundingSlider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:progressTint="@color/accent"
+                                android:thumbTint="@color/accent" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Trackpad Opacity -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/trackpad_opacity"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:id="@+id/trackpadOpacityValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="80%"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/accent" />
+
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/trackpadOpacitySlider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:progressTint="@color/accent"
+                                android:thumbTint="@color/accent" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Trackpad Width -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/trackpad_width"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:id="@+id/trackpadWidthValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="180px"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/accent" />
+
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/trackpadWidthSlider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:progressTint="@color/accent"
+                                android:thumbTint="@color/accent" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Trackpad Height -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/trackpad_height"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:id="@+id/trackpadHeightValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="120px"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/accent" />
+
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/trackpadHeightSlider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:progressTint="@color/accent"
+                                android:thumbTint="@color/accent" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Trackpad X Position -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/trackpad_x_position"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:id="@+id/trackpadXValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="50px"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/accent" />
+
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/trackpadXSlider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:progressTint="@color/accent"
+                                android:thumbTint="@color/accent" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Trackpad Y Position -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="8dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/trackpad_y_position"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:id="@+id/trackpadYValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="400px"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/accent" />
+
+                            </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/trackpadYSlider"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:progressTint="@color/accent"
+                                android:thumbTint="@color/accent" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Show Drag Handle -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="12dp"
+                            android:gravity="center_vertical">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/trackpad_show_drag"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/trackpad_show_drag_summary"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/on_surface_dim"
+                                    android:layout_marginTop="2dp" />
+
+                            </LinearLayout>
+
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/trackpadDragSwitch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:thumbTint="@color/accent"
+                                app:trackTint="@color/surface_variant" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Two-Finger Drag -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="12dp"
+                            android:gravity="center_vertical">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/trackpad_two_finger_drag"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/trackpad_two_finger_drag_summary"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/on_surface_dim"
+                                    android:layout_marginTop="2dp" />
+
+                            </LinearLayout>
+
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/trackpadTwoFingerDragSwitch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:thumbTint="@color/accent"
+                                app:trackTint="@color/surface_variant" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <!-- Keyboard Section (hidden by default) -->
+            <LinearLayout
+                android:id="@+id/keyboardSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category_keys"
+                    android:textSize="14sp"
+                    android:textColor="@color/accent"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="⚠️ Keyboard mode may not work on all BB Key2 devices due to system limitations"
+                    android:textSize="12sp"
+                    android:textColor="@color/status_warning"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginStart="4dp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="@color/card_background"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Toggle Key -->
+                        <LinearLayout
+                            android:id="@+id/toggleKeyCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="16dp"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/toggle_key"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/toggle_key_summary"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/on_surface_dim"
+                                    android:layout_marginTop="2dp" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/toggleKeyValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Space"
+                                android:textSize="14sp"
+                                android:textColor="@color/accent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/key_badge"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="6dp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Click Key -->
+                        <LinearLayout
+                            android:id="@+id/clickKeyCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="16dp"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/click_key"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/clickKeyValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Enter"
+                                android:textSize="14sp"
+                                android:textColor="@color/accent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/key_badge"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="6dp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Right Click Key -->
+                        <LinearLayout
+                            android:id="@+id/rightClickKeyCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="16dp"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/right_click_key"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/rightClickKeyValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Backspace"
+                                android:textSize="14sp"
+                                android:textColor="@color/accent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/key_badge"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="6dp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Scroll Mode Key -->
+                        <LinearLayout
+                            android:id="@+id/scrollModeKeyCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="16dp"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/scroll_mode_key"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/scrollModeKeyValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Shift"
+                                android:textSize="14sp"
+                                android:textColor="@color/accent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/key_badge"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="6dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <!-- Behavior Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_behavior"
+                android:textSize="14sp"
+                android:textColor="@color/accent"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="4dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Vibrate on Click -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="12dp"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/vibrate_on_click"
+                                android:textSize="16sp"
+                                android:textColor="@color/on_surface" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/vibrate_on_click_summary"
+                                android:textSize="12sp"
+                                android:textColor="@color/on_surface_dim"
+                                android:layout_marginTop="2dp" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/vibrateSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:thumbTint="@color/accent"
+                            app:trackTint="@color/surface_variant" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/card_stroke" />
+
+                    <!-- Auto-hide Cursor -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="12dp"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/auto_hide_cursor"
+                                android:textSize="16sp"
+                                android:textColor="@color/on_surface" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/auto_hide_cursor_summary"
+                                android:textSize="12sp"
+                                android:textColor="@color/on_surface_dim"
+                                android:layout_marginTop="2dp" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/autoHideSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:thumbTint="@color/accent"
+                            app:trackTint="@color/surface_variant" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

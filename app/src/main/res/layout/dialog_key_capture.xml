@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/card_background">
+
+    <TextView
+        android:id="@+id/captureMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/press_key_to_set"
+        android:textSize="16sp"
+        android:textColor="@color/on_surface"
+        android:textAlignment="center"
+        android:gravity="center" />
+
+</LinearLayout>
+

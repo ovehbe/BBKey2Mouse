@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BBKey2Mouse</string>
+    <string name="settings">Settings</string>
+    
+    <!-- Accessibility Service -->
+    <string name="accessibility_service_label">BBKey2Mouse Cursor</string>
+    <string name="accessibility_service_description">Uses your BlackBerry Key2 keyboard touchpad as a mouse cursor. Requires accessibility permission to overlay cursor and perform clicks.</string>
+    
+    <!-- Main Screen -->
+    <string name="mouse_mode_enabled">Mouse Mode: ON</string>
+    <string name="mouse_mode_disabled">Mouse Mode: OFF</string>
+    <string name="tap_to_toggle">Long press your toggle key to enable mouse mode</string>
+    <string name="service_not_enabled">Accessibility Service Not Enabled</string>
+    <string name="enable_service">Enable Service</string>
+    <string name="overlay_permission_needed">Overlay Permission Required</string>
+    <string name="grant_overlay">Grant Permission</string>
+    
+    <!-- Settings -->
+    <string name="category_pointer">Pointer Settings</string>
+    <string name="pointer_speed">Pointer Speed</string>
+    <string name="pointer_speed_summary">Adjust cursor movement sensitivity</string>
+    <string name="pointer_size">Pointer Size</string>
+    <string name="pointer_size_summary">Adjust cursor size</string>
+    <string name="pointer_image">Pointer Image</string>
+    <string name="pointer_image_summary">Choose your cursor style</string>
+    
+    <string name="category_keys">Key Bindings</string>
+    <string name="toggle_key">Toggle Mouse Mode Key</string>
+    <string name="toggle_key_summary">Long press this key to toggle mouse mode</string>
+    <string name="click_key">Left Click Key</string>
+    <string name="click_key_summary">Press this key to left click</string>
+    <string name="right_click_key">Right Click Key</string>
+    <string name="right_click_key_summary">Press this key to right click</string>
+    <string name="scroll_mode_key">Scroll Mode Key</string>
+    <string name="scroll_mode_key_summary">Hold to temporarily switch to scroll mode</string>
+    
+    <string name="category_behavior">Behavior</string>
+    <string name="vibrate_on_click">Vibrate on Click</string>
+    <string name="vibrate_on_click_summary">Haptic feedback when clicking</string>
+    <string name="auto_hide_cursor">Auto-hide Cursor</string>
+    <string name="auto_hide_cursor_summary">Hide cursor after inactivity</string>
+    
+    <!-- Pointer images -->
+    <string name="pointer_default">Default Arrow</string>
+    <string name="pointer_cheese">Cheese 🧀</string>
+    <string name="pointer_dot">Simple Dot</string>
+    <string name="pointer_hand">Hand Pointer</string>
+    
+    <!-- Keys -->
+    <string name="key_space">Space</string>
+    <string name="key_shift">Shift</string>
+    <string name="key_alt">Alt</string>
+    <string name="key_sym">Sym</string>
+    <string name="key_enter">Enter</string>
+    <string name="key_backspace">Backspace</string>
+    
+    <!-- Status -->
+    <string name="status_ready">Ready</string>
+    <string name="status_active">Mouse Mode Active</string>
+    <string name="press_key_to_set">Press a key to set…</string>
+    
+    <!-- Shortcut -->
+    <string name="toggle_mouse_shortcut">Toggle Mouse</string>
+    
+    <!-- Input Mode -->
+    <string name="category_input_mode">Input Mode</string>
+    <string name="input_mode">Mouse Control Method</string>
+    <string name="input_mode_virtual">Virtual Trackpad</string>
+    <string name="input_mode_keyboard">Keyboard Touchpad (Experimental)</string>
+    <string name="input_mode_virtual_summary">On-screen trackpad overlay</string>
+    <string name="input_mode_keyboard_summary">Use BB Key2 keyboard touch (may not work)</string>
+    
+    <!-- Virtual Trackpad Settings -->
+    <string name="category_virtual_trackpad">Virtual Trackpad</string>
+    <string name="trackpad_color">Trackpad Color</string>
+    <string name="trackpad_color_summary">Background color of the trackpad</string>
+    <string name="trackpad_opacity">Trackpad Opacity</string>
+    <string name="trackpad_opacity_summary">Transparency level</string>
+    <string name="trackpad_shape">Trackpad Shape</string>
+    <string name="trackpad_shape_summary">Square or circular trackpad</string>
+    <string name="trackpad_width">Trackpad Width</string>
+    <string name="trackpad_height">Trackpad Height</string>
+    <string name="trackpad_rounding">Corner Rounding</string>
+    <string name="trackpad_x_position">X Position</string>
+    <string name="trackpad_y_position">Y Position</string>
+    <string name="trackpad_show_drag">Show Drag Handle</string>
+    <string name="trackpad_show_drag_summary">Enable to reposition trackpad, then disable to lock</string>
+    <string name="trackpad_two_finger_drag">Two-Finger Drag</string>
+    <string name="trackpad_two_finger_drag_summary">Touch with two fingers and drag to reposition</string>
+    
+    <!-- Shapes -->
+    <string name="shape_square">Square</string>
+    <string name="shape_rounded">Rounded Square</string>
+    <string name="shape_circle">Circle</string>
+    
+    <!-- Colors -->
+    <string name="color_cyan">Cyan</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_green">Green</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_white">White</string>
+    <string name="color_dark">Dark</string>
+    
+    <!-- Trackpad instructions -->
+    <string name="trackpad_tap_click">Tap to click</string>
+    <string name="trackpad_long_press">Long press for right-click</string>
+</resources>
+

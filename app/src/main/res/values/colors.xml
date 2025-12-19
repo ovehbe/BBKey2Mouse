@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme inspired by BB Key2's black aesthetic -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Primary palette - BlackBerry inspired -->
+    <color name="primary">#1A1A2E</color>
+    <color name="primary_dark">#0F0F1A</color>
+    <color name="primary_variant">#16213E</color>
+    
+    <!-- Accent - Electric cyan for that tech feel -->
+    <color name="accent">#00D9FF</color>
+    <color name="accent_dark">#00A8C6</color>
+    <color name="accent_variant">#4DFFFF</color>
+    
+    <!-- Surface colors -->
+    <color name="surface">#1E1E2E</color>
+    <color name="surface_variant">#2A2A3E</color>
+    <color name="on_surface">#E0E0E0</color>
+    <color name="on_surface_dim">#888888</color>
+    
+    <!-- Status colors -->
+    <color name="status_active">#00FF88</color>
+    <color name="status_inactive">#FF4444</color>
+    <color name="status_warning">#FFAA00</color>
+    
+    <!-- Card/Container -->
+    <color name="card_background">#252538</color>
+    <color name="card_stroke">#3A3A50</color>
+    
+    <!-- Ripple -->
+    <color name="ripple">#3300D9FF</color>
+</resources>
+
