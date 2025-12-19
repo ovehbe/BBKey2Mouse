@@ -269,8 +269,34 @@ class SettingsActivity : AppCompatActivity() {
         }
         binding.customTrackpadClearBtn.setOnClickListener {
             Preferences.setCustomTrackpadUri(this, null)
+            Preferences.setTrackpadStandaloneImage(this, false)
             updateCustomTrackpadStatus()
+            updateStandaloneImageVisibility()
             notifySettingsChanged()
+        }
+        
+        // Standalone Image Toggle
+        binding.standaloneImageSwitch.setOnCheckedChangeListener { _, isChecked ->
+            Preferences.setTrackpadStandaloneImage(this, isChecked)
+            updateStandaloneImageVisibility()
+            notifySettingsChanged()
+        }
+        
+        // Image Size Slider
+        binding.trackpadImageSizeSlider.apply {
+            max = 450 // 50-500
+            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                    val size = 50 + progress
+                    binding.trackpadImageSizeValue.text = "${size}px"
+                    if (fromUser) {
+                        Preferences.setTrackpadImageSize(this@SettingsActivity, size)
+                        notifySettingsChanged()
+                    }
+                }
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
         }
     }
     
@@ -357,6 +383,13 @@ class SettingsActivity : AppCompatActivity() {
         updateCustomPointerStatus()
         updateCustomTrackpadStatus()
         
+        // Standalone image settings
+        binding.standaloneImageSwitch.isChecked = Preferences.getTrackpadStandaloneImage(this)
+        val imageSize = Preferences.getTrackpadImageSize(this)
+        binding.trackpadImageSizeSlider.progress = imageSize - 50
+        binding.trackpadImageSizeValue.text = "${imageSize}px"
+        updateStandaloneImageVisibility()
+        
         // Key bindings
         binding.toggleKeyValue.text = Preferences.getKeyName(Preferences.getToggleKeycode(this))
         binding.clickKeyValue.text = Preferences.getKeyName(Preferences.getClickKeycode(this))
@@ -413,27 +446,51 @@ class SettingsActivity : AppCompatActivity() {
         if (uri != null) {
             binding.customTrackpadStatus.text = getString(R.string.image_set)
             binding.customTrackpadClearBtn.visibility = View.VISIBLE
+            binding.standaloneImageSection.visibility = View.VISIBLE
         } else {
             binding.customTrackpadStatus.text = getString(R.string.no_image)
             binding.customTrackpadClearBtn.visibility = View.GONE
+            binding.standaloneImageSection.visibility = View.GONE
+        }
+    }
+    
+    private fun updateStandaloneImageVisibility() {
+        val hasImage = Preferences.getCustomTrackpadUri(this) != null
+        val isStandalone = Preferences.getTrackpadStandaloneImage(this)
+        
+        if (hasImage && isStandalone) {
+            // Standalone mode: hide width/height, show image size
+            binding.trackpadSizeSection.visibility = View.GONE
+            binding.imageSizeSection.visibility = View.VISIBLE
+        } else {
+            // Mask mode or no image: show width/height, hide image size
+            binding.trackpadSizeSection.visibility = View.VISIBLE
+            binding.imageSizeSection.visibility = View.GONE
         }
     }
     
     private fun updateTrackpadColorDisplay() {
-        val colorName = when (Preferences.getTrackpadColor(this)) {
+        val colorType = Preferences.getTrackpadColor(this)
+        val colorName = when (colorType) {
             Preferences.COLOR_CYAN -> getString(R.string.color_cyan)
             Preferences.COLOR_PURPLE -> getString(R.string.color_purple)
             Preferences.COLOR_GREEN -> getString(R.string.color_green)
             Preferences.COLOR_ORANGE -> getString(R.string.color_orange)
             Preferences.COLOR_WHITE -> getString(R.string.color_white)
             Preferences.COLOR_DARK -> getString(R.string.color_dark)
+            Preferences.COLOR_TRANSPARENT -> getString(R.string.color_transparent)
+            Preferences.COLOR_CUSTOM -> Preferences.getCustomTrackpadColorHex(this)
             else -> getString(R.string.color_cyan)
         }
         binding.trackpadColorValue.text = colorName
         
-        // Set color preview
+        // Set color preview (checkerboard for transparent)
         val colorValue = Preferences.getTrackpadColorValue(this)
-        binding.trackpadColorPreview.setBackgroundColor(colorValue)
+        if (colorType == Preferences.COLOR_TRANSPARENT) {
+            binding.trackpadColorPreview.setBackgroundColor(Color.LTGRAY)
+        } else {
+            binding.trackpadColorPreview.setBackgroundColor(colorValue)
+        }
     }
     
     private fun showInputModeDialog() {
@@ -500,7 +557,9 @@ class SettingsActivity : AppCompatActivity() {
             getString(R.string.color_green),
             getString(R.string.color_orange),
             getString(R.string.color_white),
-            getString(R.string.color_dark)
+            getString(R.string.color_dark),
+            getString(R.string.color_transparent),
+            getString(R.string.color_custom)
         )
         
         val currentSelection = Preferences.getTrackpadColor(this)
@@ -508,10 +567,54 @@ class SettingsActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.trackpad_color))
             .setSingleChoiceItems(options, currentSelection) { dialog, which ->
-                Preferences.setTrackpadColor(this, which)
-                updateTrackpadColorDisplay()
-                notifySettingsChanged()
-                dialog.dismiss()
+                if (which == Preferences.COLOR_CUSTOM) {
+                    dialog.dismiss()
+                    showCustomColorDialog()
+                } else {
+                    Preferences.setTrackpadColor(this, which)
+                    updateTrackpadColorDisplay()
+                    notifySettingsChanged()
+                    dialog.dismiss()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+    
+    private fun showCustomColorDialog() {
+        val currentHex = Preferences.getCustomTrackpadColorHex(this)
+        
+        val editText = android.widget.EditText(this).apply {
+            setText(currentHex)
+            hint = "#RRGGBB"
+            inputType = android.text.InputType.TYPE_CLASS_TEXT
+            filters = arrayOf(android.text.InputFilter.LengthFilter(7))
+        }
+        
+        val container = android.widget.FrameLayout(this).apply {
+            val padding = (16 * resources.displayMetrics.density).toInt()
+            setPadding(padding, padding / 2, padding, 0)
+            addView(editText)
+        }
+        
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.custom_color))
+            .setMessage(getString(R.string.enter_hex_color))
+            .setView(container)
+            .setPositiveButton("OK") { _, _ ->
+                var hex = editText.text.toString().trim()
+                if (!hex.startsWith("#")) hex = "#$hex"
+                
+                try {
+                    // Validate color
+                    android.graphics.Color.parseColor(hex)
+                    Preferences.setCustomTrackpadColor(this, hex)
+                    Preferences.setTrackpadColor(this, Preferences.COLOR_CUSTOM)
+                    updateTrackpadColorDisplay()
+                    notifySettingsChanged()
+                } catch (e: Exception) {
+                    android.widget.Toast.makeText(this, "Invalid color format", android.widget.Toast.LENGTH_SHORT).show()
+                }
             }
             .setNegativeButton("Cancel", null)
             .show()

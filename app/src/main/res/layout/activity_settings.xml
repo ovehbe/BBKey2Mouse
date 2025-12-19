@@ -459,93 +459,102 @@
 
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/card_stroke" />
-
-                        <!-- Trackpad Width -->
+                        <!-- Width/Height Section (hidden in standalone mode) -->
                         <LinearLayout
+                            android:id="@+id/trackpadSizeSection"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingVertical="8dp">
+                            android:orientation="vertical">
 
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/card_stroke" />
+
+                            <!-- Trackpad Width -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:orientation="vertical"
+                                android:paddingVertical="8dp">
 
-                                <TextView
-                                    android:layout_width="0dp"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/trackpad_width"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/on_surface" />
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/trackpadWidthValue"
-                                    android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="@string/trackpad_width"
+                                        android:textSize="16sp"
+                                        android:textColor="@color/on_surface" />
+
+                                    <TextView
+                                        android:id="@+id/trackpadWidthValue"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="180px"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/accent" />
+
+                                </LinearLayout>
+
+                                <SeekBar
+                                    android:id="@+id/trackpadWidthSlider"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="180px"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/accent" />
+                                    android:layout_marginTop="8dp"
+                                    android:progressTint="@color/accent"
+                                    android:thumbTint="@color/accent" />
 
                             </LinearLayout>
 
-                            <SeekBar
-                                android:id="@+id/trackpadWidthSlider"
+                            <View
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:progressTint="@color/accent"
-                                android:thumbTint="@color/accent" />
+                                android:layout_height="1dp"
+                                android:background="@color/card_stroke" />
 
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/card_stroke" />
-
-                        <!-- Trackpad Height -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingVertical="8dp">
-
+                            <!-- Trackpad Height -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:orientation="vertical"
+                                android:paddingVertical="8dp">
 
-                                <TextView
-                                    android:layout_width="0dp"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/trackpad_height"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/on_surface" />
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/trackpadHeightValue"
-                                    android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="@string/trackpad_height"
+                                        android:textSize="16sp"
+                                        android:textColor="@color/on_surface" />
+
+                                    <TextView
+                                        android:id="@+id/trackpadHeightValue"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="120px"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/accent" />
+
+                                </LinearLayout>
+
+                                <SeekBar
+                                    android:id="@+id/trackpadHeightSlider"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="120px"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/accent" />
+                                    android:layout_marginTop="8dp"
+                                    android:progressTint="@color/accent"
+                                    android:thumbTint="@color/accent" />
 
                             </LinearLayout>
-
-                            <SeekBar
-                                android:id="@+id/trackpadHeightSlider"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:progressTint="@color/accent"
-                                android:thumbTint="@color/accent" />
 
                         </LinearLayout>
 
@@ -784,6 +793,108 @@
                                 android:text="@string/select_image"
                                 android:textSize="12sp"
                                 style="@style/Widget.Material3.Button.TonalButton" />
+
+                        </LinearLayout>
+
+                        <!-- Standalone Image Mode (only visible when image is set) -->
+                        <LinearLayout
+                            android:id="@+id/standaloneImageSection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/card_stroke" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingVertical="12dp"
+                                android:gravity="center_vertical">
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/trackpad_standalone_image"
+                                        android:textSize="16sp"
+                                        android:textColor="@color/on_surface" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/trackpad_standalone_image_summary"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/on_surface_dim"
+                                        android:layout_marginTop="2dp" />
+
+                                </LinearLayout>
+
+                                <com.google.android.material.switchmaterial.SwitchMaterial
+                                    android:id="@+id/standaloneImageSwitch"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:thumbTint="@color/accent"
+                                    app:trackTint="@color/surface_variant" />
+
+                            </LinearLayout>
+
+                            <!-- Image Size (only visible in standalone mode) -->
+                            <LinearLayout
+                                android:id="@+id/imageSizeSection"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingVertical="8dp"
+                                android:visibility="gone">
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/card_stroke"
+                                    android:layout_marginBottom="8dp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="@string/trackpad_image_size"
+                                        android:textSize="16sp"
+                                        android:textColor="@color/on_surface" />
+
+                                    <TextView
+                                        android:id="@+id/trackpadImageSizeValue"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="150px"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/accent" />
+
+                                </LinearLayout>
+
+                                <SeekBar
+                                    android:id="@+id/trackpadImageSizeSlider"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:progressTint="@color/accent"
+                                    android:thumbTint="@color/accent" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 

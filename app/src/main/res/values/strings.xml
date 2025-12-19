@@ -112,6 +112,15 @@
     <string name="color_orange">Orange</string>
     <string name="color_white">White</string>
     <string name="color_dark">Dark</string>
+    <string name="color_transparent">Transparent</string>
+    <string name="color_custom">Custom…</string>
+    <string name="custom_color">Custom Color</string>
+    <string name="enter_hex_color">Enter hex color (e.g. #FF5500)</string>
+    
+    <!-- Trackpad Image Mode -->
+    <string name="trackpad_standalone_image">Standalone Image</string>
+    <string name="trackpad_standalone_image_summary">Use image as trackpad instead of overlay</string>
+    <string name="trackpad_image_size">Image Size</string>
     
     <!-- Trackpad instructions -->
     <string name="trackpad_tap_click">Tap to click</string>

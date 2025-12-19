@@ -36,6 +36,9 @@ object Preferences {
     private const val KEY_TRACKPAD_TWO_FINGER_DRAG = "trackpad_two_finger_drag"
     private const val KEY_CUSTOM_POINTER_URI = "custom_pointer_uri"
     private const val KEY_CUSTOM_TRACKPAD_URI = "custom_trackpad_uri"
+    private const val KEY_CUSTOM_TRACKPAD_COLOR = "custom_trackpad_color"
+    private const val KEY_TRACKPAD_STANDALONE_IMAGE = "trackpad_standalone_image"
+    private const val KEY_TRACKPAD_IMAGE_SIZE = "trackpad_image_size"
     
     // Pointer image options
     const val POINTER_DEFAULT = 0
@@ -60,6 +63,8 @@ object Preferences {
     const val COLOR_ORANGE = 3
     const val COLOR_WHITE = 4
     const val COLOR_DARK = 5
+    const val COLOR_TRANSPARENT = 6
+    const val COLOR_CUSTOM = 7
     
     // Defaults
     private const val DEFAULT_POINTER_SPEED = 1.5f
@@ -82,6 +87,9 @@ object Preferences {
     private const val DEFAULT_TRACKPAD_SHOW_DRAG = false
     private const val DEFAULT_TRACKPAD_ROUNDING = 16 // pixels
     private const val DEFAULT_TRACKPAD_TWO_FINGER_DRAG = true
+    private const val DEFAULT_CUSTOM_TRACKPAD_COLOR = "#00D9FF" // Cyan
+    private const val DEFAULT_TRACKPAD_STANDALONE_IMAGE = false
+    private const val DEFAULT_TRACKPAD_IMAGE_SIZE = 150
     
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -207,8 +215,28 @@ object Preferences {
             COLOR_ORANGE -> 0xFFFF9800.toInt()
             COLOR_WHITE -> 0xFFFFFFFF.toInt()
             COLOR_DARK -> 0xFF2A2A3E.toInt()
+            COLOR_TRANSPARENT -> 0x00000000  // Fully transparent
+            COLOR_CUSTOM -> getCustomTrackpadColor(context)
             else -> 0xFF00D9FF.toInt()
         }
+    }
+    
+    // Custom Trackpad Color (hex)
+    fun getCustomTrackpadColor(context: Context): Int {
+        val hex = getPrefs(context).getString(KEY_CUSTOM_TRACKPAD_COLOR, DEFAULT_CUSTOM_TRACKPAD_COLOR)!!
+        return try {
+            android.graphics.Color.parseColor(hex)
+        } catch (e: Exception) {
+            0xFF00D9FF.toInt()
+        }
+    }
+    
+    fun setCustomTrackpadColor(context: Context, hexColor: String) {
+        getPrefs(context).edit { putString(KEY_CUSTOM_TRACKPAD_COLOR, hexColor) }
+    }
+    
+    fun getCustomTrackpadColorHex(context: Context): String {
+        return getPrefs(context).getString(KEY_CUSTOM_TRACKPAD_COLOR, DEFAULT_CUSTOM_TRACKPAD_COLOR)!!
     }
     
     // Trackpad Opacity (0-100)
@@ -314,6 +342,24 @@ object Preferences {
             if (uri == null) remove(KEY_CUSTOM_TRACKPAD_URI)
             else putString(KEY_CUSTOM_TRACKPAD_URI, uri) 
         }
+    }
+    
+    // Standalone Image Mode (use image as-is vs mask)
+    fun getTrackpadStandaloneImage(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_TRACKPAD_STANDALONE_IMAGE, DEFAULT_TRACKPAD_STANDALONE_IMAGE)
+    }
+    
+    fun setTrackpadStandaloneImage(context: Context, standalone: Boolean) {
+        getPrefs(context).edit { putBoolean(KEY_TRACKPAD_STANDALONE_IMAGE, standalone) }
+    }
+    
+    // Trackpad Image Size (for standalone mode)
+    fun getTrackpadImageSize(context: Context): Int {
+        return getPrefs(context).getInt(KEY_TRACKPAD_IMAGE_SIZE, DEFAULT_TRACKPAD_IMAGE_SIZE)
+    }
+    
+    fun setTrackpadImageSize(context: Context, size: Int) {
+        getPrefs(context).edit { putInt(KEY_TRACKPAD_IMAGE_SIZE, size.coerceIn(50, 500)) }
     }
     
     // Helper to get key name

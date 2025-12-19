@@ -57,6 +57,12 @@ class FloatingControlsOverlay(
     private var trackpadOpacity = Preferences.getTrackpadOpacity(context)
     private var trackpadRounding = Preferences.getTrackpadRounding(context)
     private var showDragHandle = Preferences.getTrackpadShowDrag(context)
+    private var standaloneImageMode = Preferences.getTrackpadStandaloneImage(context)
+    private var trackpadImageSize = Preferences.getTrackpadImageSize(context)
+    
+    // Original image dimensions (for aspect ratio in standalone mode)
+    private var originalImageWidth = 0
+    private var originalImageHeight = 0
     
     // Drag handle dimensions
     private val dragHandleHeight = 30
@@ -134,13 +140,41 @@ class FloatingControlsOverlay(
     }
     
     private fun updateDimensions() {
-        val totalHeight = if (showDragHandle) {
-            trackpadHeight + dragHandleHeight + dragHandlePadding
+        // In standalone mode with an image, use image size with aspect ratio
+        val (width, height) = if (standaloneImageMode && originalImageWidth > 0 && originalImageHeight > 0) {
+            val aspectRatio = originalImageWidth.toFloat() / originalImageHeight
+            if (aspectRatio > 1) {
+                // Wider than tall
+                Pair(trackpadImageSize, (trackpadImageSize / aspectRatio).toInt())
+            } else {
+                // Taller than wide
+                Pair((trackpadImageSize * aspectRatio).toInt(), trackpadImageSize)
+            }
         } else {
-            trackpadHeight
+            Pair(trackpadWidth, trackpadHeight)
         }
-        layoutParams.width = trackpadWidth
+        
+        val totalHeight = if (showDragHandle) {
+            height + dragHandleHeight + dragHandlePadding
+        } else {
+            height
+        }
+        layoutParams.width = width
         layoutParams.height = totalHeight
+    }
+    
+    // Get effective trackpad dimensions (for drawing)
+    private fun getEffectiveTrackpadSize(): Pair<Int, Int> {
+        return if (standaloneImageMode && originalImageWidth > 0 && originalImageHeight > 0) {
+            val aspectRatio = originalImageWidth.toFloat() / originalImageHeight
+            if (aspectRatio > 1) {
+                Pair(trackpadImageSize, (trackpadImageSize / aspectRatio).toInt())
+            } else {
+                Pair((trackpadImageSize * aspectRatio).toInt(), trackpadImageSize)
+            }
+        } else {
+            Pair(trackpadWidth, trackpadHeight)
+        }
     }
     
     fun show() {
@@ -180,12 +214,14 @@ class FloatingControlsOverlay(
         trackpadRounding = Preferences.getTrackpadRounding(context)
         showDragHandle = Preferences.getTrackpadShowDrag(context)
         twoFingerDragEnabled = Preferences.getTrackpadTwoFingerDrag(context)
+        standaloneImageMode = Preferences.getTrackpadStandaloneImage(context)
+        trackpadImageSize = Preferences.getTrackpadImageSize(context)
         
         layoutParams.x = Preferences.getTrackpadX(context)
         layoutParams.y = Preferences.getTrackpadY(context)
         
-        updateDimensions()
         loadCustomTrackpadImage()
+        updateDimensions()
         
         if (isAttached) {
             try {
@@ -206,14 +242,31 @@ class FloatingControlsOverlay(
                 context.contentResolver.openInputStream(uri)?.use { inputStream ->
                     val originalBitmap = BitmapFactory.decodeStream(inputStream)
                     if (originalBitmap != null) {
-                        // Scale bitmap to trackpad size
+                        // Store original dimensions for aspect ratio
+                        originalImageWidth = originalBitmap.width
+                        originalImageHeight = originalBitmap.height
+                        
                         customTrackpadBitmap?.recycle()
-                        customTrackpadBitmap = Bitmap.createScaledBitmap(
-                            originalBitmap,
-                            trackpadWidth,
-                            trackpadHeight,
-                            true
-                        )
+                        
+                        if (standaloneImageMode) {
+                            // Standalone mode: scale based on size setting while keeping aspect ratio
+                            val (targetWidth, targetHeight) = getEffectiveTrackpadSize()
+                            customTrackpadBitmap = Bitmap.createScaledBitmap(
+                                originalBitmap,
+                                targetWidth,
+                                targetHeight,
+                                true
+                            )
+                        } else {
+                            // Mask mode: scale to trackpad size
+                            customTrackpadBitmap = Bitmap.createScaledBitmap(
+                                originalBitmap,
+                                trackpadWidth,
+                                trackpadHeight,
+                                true
+                            )
+                        }
+                        
                         if (originalBitmap != customTrackpadBitmap) {
                             originalBitmap.recycle()
                         }
@@ -223,10 +276,14 @@ class FloatingControlsOverlay(
                 Log.e(TAG, "Failed to load custom trackpad image", e)
                 customTrackpadBitmap?.recycle()
                 customTrackpadBitmap = null
+                originalImageWidth = 0
+                originalImageHeight = 0
             }
         } else {
             customTrackpadBitmap?.recycle()
             customTrackpadBitmap = null
+            originalImageWidth = 0
+            originalImageHeight = 0
         }
     }
     
@@ -234,6 +291,7 @@ class FloatingControlsOverlay(
         super.onDraw(canvas)
         
         val alpha = (trackpadOpacity * 255 / 100)
+        val (effectiveWidth, effectiveHeight) = getEffectiveTrackpadSize()
         
         // Draw drag handle if enabled
         var trackpadTop = 0f
@@ -243,56 +301,68 @@ class FloatingControlsOverlay(
             // Drag handle background
             dragHandlePaint.color = Color.argb(alpha, 100, 100, 100)
             val handleRect = RectF(
-                trackpadWidth / 4f,
+                effectiveWidth / 4f,
                 8f,
-                trackpadWidth * 3f / 4f,
+                effectiveWidth * 3f / 4f,
                 dragHandleHeight.toFloat() - 8f
             )
             canvas.drawRoundRect(handleRect, 6f, 6f, dragHandlePaint)
         }
         
-        // Trackpad background
-        trackpadPaint.color = Color.argb(
-            alpha,
-            Color.red(trackpadColor),
-            Color.green(trackpadColor),
-            Color.blue(trackpadColor)
-        )
-        
-        // Border
-        borderPaint.color = Color.argb(
-            (alpha * 1.2f).toInt().coerceAtMost(255),
-            Color.red(trackpadColor),
-            Color.green(trackpadColor),
-            Color.blue(trackpadColor)
-        )
-        
-        val trackpadRect = RectF(0f, trackpadTop, trackpadWidth.toFloat(), trackpadTop + trackpadHeight)
+        val bitmap = customTrackpadBitmap
         val rounding = trackpadRounding.toFloat()
         
-        canvas.drawRoundRect(trackpadRect, rounding, rounding, trackpadPaint)
-        
-        // Draw custom trackpad image (mask) if available
-        val bitmap = customTrackpadBitmap
-        if (bitmap != null && !bitmap.isRecycled) {
-            // Apply opacity to bitmap
+        if (standaloneImageMode && bitmap != null && !bitmap.isRecycled) {
+            // Standalone mode: just draw the image directly with opacity
             bitmapPaint.alpha = alpha
             
-            // Save canvas state for clipping
+            // Apply rounding with clip path
             canvas.save()
-            
-            // Clip to rounded rect shape
+            val trackpadRect = RectF(0f, trackpadTop, effectiveWidth.toFloat(), trackpadTop + effectiveHeight)
             val clipPath = android.graphics.Path()
             clipPath.addRoundRect(trackpadRect, rounding, rounding, android.graphics.Path.Direction.CW)
             canvas.clipPath(clipPath)
             
-            // Draw the bitmap
             canvas.drawBitmap(bitmap, 0f, trackpadTop, bitmapPaint)
-            
             canvas.restore()
+            
+            // No border in standalone mode - image is the trackpad
+        } else {
+            // Mask mode or no image: draw background + image overlay
+            val trackpadRect = RectF(0f, trackpadTop, effectiveWidth.toFloat(), trackpadTop + effectiveHeight)
+            
+            // Trackpad background (skip if transparent)
+            if (trackpadColor != 0x00000000) {
+                trackpadPaint.color = Color.argb(
+                    alpha,
+                    Color.red(trackpadColor),
+                    Color.green(trackpadColor),
+                    Color.blue(trackpadColor)
+                )
+                canvas.drawRoundRect(trackpadRect, rounding, rounding, trackpadPaint)
+            }
+            
+            // Draw custom trackpad image (mask) if available
+            if (bitmap != null && !bitmap.isRecycled) {
+                bitmapPaint.alpha = alpha
+                
+                canvas.save()
+                val clipPath = android.graphics.Path()
+                clipPath.addRoundRect(trackpadRect, rounding, rounding, android.graphics.Path.Direction.CW)
+                canvas.clipPath(clipPath)
+                canvas.drawBitmap(bitmap, 0f, trackpadTop, bitmapPaint)
+                canvas.restore()
+            }
+            
+            // Border
+            borderPaint.color = Color.argb(
+                (alpha * 1.2f).toInt().coerceAtMost(255),
+                Color.red(trackpadColor),
+                Color.green(trackpadColor),
+                Color.blue(trackpadColor)
+            )
+            canvas.drawRoundRect(trackpadRect, rounding, rounding, borderPaint)
         }
-        
-        canvas.drawRoundRect(trackpadRect, rounding, rounding, borderPaint)
     }
     
     @SuppressLint("ClickableViewAccessibility")
