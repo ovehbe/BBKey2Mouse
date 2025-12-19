@@ -2,11 +2,14 @@ package com.bbkey2mouse.overlay
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PixelFormat
 import android.graphics.RectF
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -86,6 +89,9 @@ class FloatingControlsOverlay(
         }
     }
     
+    // Custom trackpad image (mask)
+    private var customTrackpadBitmap: Bitmap? = null
+    
     // Paints
     private val trackpadPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -93,6 +99,9 @@ class FloatingControlsOverlay(
         strokeWidth = 2f
     }
     private val dragHandlePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val bitmapPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        isFilterBitmap = true
+    }
     
     // Vibrator
     private val vibrator: Vibrator by lazy {
@@ -176,6 +185,7 @@ class FloatingControlsOverlay(
         layoutParams.y = Preferences.getTrackpadY(context)
         
         updateDimensions()
+        loadCustomTrackpadImage()
         
         if (isAttached) {
             try {
@@ -186,6 +196,38 @@ class FloatingControlsOverlay(
         }
         
         invalidate()
+    }
+    
+    private fun loadCustomTrackpadImage() {
+        val uriString = Preferences.getCustomTrackpadUri(context)
+        if (uriString != null) {
+            try {
+                val uri = Uri.parse(uriString)
+                context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    val originalBitmap = BitmapFactory.decodeStream(inputStream)
+                    if (originalBitmap != null) {
+                        // Scale bitmap to trackpad size
+                        customTrackpadBitmap?.recycle()
+                        customTrackpadBitmap = Bitmap.createScaledBitmap(
+                            originalBitmap,
+                            trackpadWidth,
+                            trackpadHeight,
+                            true
+                        )
+                        if (originalBitmap != customTrackpadBitmap) {
+                            originalBitmap.recycle()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to load custom trackpad image", e)
+                customTrackpadBitmap?.recycle()
+                customTrackpadBitmap = null
+            }
+        } else {
+            customTrackpadBitmap?.recycle()
+            customTrackpadBitmap = null
+        }
     }
     
     override fun onDraw(canvas: Canvas) {
@@ -229,6 +271,27 @@ class FloatingControlsOverlay(
         val rounding = trackpadRounding.toFloat()
         
         canvas.drawRoundRect(trackpadRect, rounding, rounding, trackpadPaint)
+        
+        // Draw custom trackpad image (mask) if available
+        val bitmap = customTrackpadBitmap
+        if (bitmap != null && !bitmap.isRecycled) {
+            // Apply opacity to bitmap
+            bitmapPaint.alpha = alpha
+            
+            // Save canvas state for clipping
+            canvas.save()
+            
+            // Clip to rounded rect shape
+            val clipPath = android.graphics.Path()
+            clipPath.addRoundRect(trackpadRect, rounding, rounding, android.graphics.Path.Direction.CW)
+            canvas.clipPath(clipPath)
+            
+            // Draw the bitmap
+            canvas.drawBitmap(bitmap, 0f, trackpadTop, bitmapPaint)
+            
+            canvas.restore()
+        }
+        
         canvas.drawRoundRect(trackpadRect, rounding, rounding, borderPaint)
     }
     

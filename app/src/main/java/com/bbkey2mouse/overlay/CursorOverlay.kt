@@ -2,16 +2,20 @@ package com.bbkey2mouse.overlay
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PixelFormat
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.RectF
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -19,6 +23,10 @@ import com.bbkey2mouse.util.Preferences
 
 @SuppressLint("ViewConstructor")
 class CursorOverlay(context: Context) : View(context) {
+    
+    companion object {
+        private const val TAG = "CursorOverlay"
+    }
     
     private val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private val handler = Handler(Looper.getMainLooper())
@@ -35,6 +43,9 @@ class CursorOverlay(context: Context) : View(context) {
     // Cursor properties
     private var cursorSize = Preferences.getPointerSize(context)
     private var cursorImage = Preferences.getPointerImage(context)
+    
+    // Custom cursor bitmap
+    private var customCursorBitmap: Bitmap? = null
     
     // Paints
     private val cursorPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -133,7 +144,38 @@ class CursorOverlay(context: Context) : View(context) {
         cursorSize = Preferences.getPointerSize(context)
         cursorImage = Preferences.getPointerImage(context)
         autoHideEnabled = Preferences.getAutoHideCursor(context)
+        loadCustomCursor()
         invalidate()
+    }
+    
+    private fun loadCustomCursor() {
+        val uriString = Preferences.getCustomPointerUri(context)
+        if (uriString != null && cursorImage == Preferences.POINTER_CUSTOM) {
+            try {
+                val uri = Uri.parse(uriString)
+                context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    val originalBitmap = BitmapFactory.decodeStream(inputStream)
+                    if (originalBitmap != null) {
+                        // Scale bitmap to cursor size
+                        customCursorBitmap = Bitmap.createScaledBitmap(
+                            originalBitmap, 
+                            cursorSize, 
+                            cursorSize, 
+                            true
+                        )
+                        if (originalBitmap != customCursorBitmap) {
+                            originalBitmap.recycle()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to load custom cursor", e)
+                customCursorBitmap = null
+            }
+        } else {
+            customCursorBitmap?.recycle()
+            customCursorBitmap = null
+        }
     }
     
     private fun scheduleAutoHide() {
@@ -183,6 +225,17 @@ class CursorOverlay(context: Context) : View(context) {
             Preferences.POINTER_CHEESE -> drawCheeseCursor(canvas)
             Preferences.POINTER_DOT -> drawDotCursor(canvas)
             Preferences.POINTER_HAND -> drawHandCursor(canvas)
+            Preferences.POINTER_CUSTOM -> drawCustomCursor(canvas)
+        }
+    }
+    
+    private fun drawCustomCursor(canvas: Canvas) {
+        val bitmap = customCursorBitmap
+        if (bitmap != null && !bitmap.isRecycled) {
+            canvas.drawBitmap(bitmap, cursorX, cursorY, null)
+        } else {
+            // Fallback to arrow if custom bitmap not available
+            drawArrowCursor(canvas)
         }
     }
     

@@ -3,11 +3,13 @@ package com.bbkey2mouse
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.bbkey2mouse.databinding.ActivitySettingsBinding
 import com.bbkey2mouse.service.MouseAccessibilityService
@@ -16,6 +18,34 @@ import com.bbkey2mouse.util.Preferences
 class SettingsActivity : AppCompatActivity() {
     
     private lateinit var binding: ActivitySettingsBinding
+    
+    // Image picker launchers
+    private val customPointerPicker = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        uri?.let {
+            // Persist permission
+            contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            Preferences.setCustomPointerUri(this, it.toString())
+            // Auto-select custom pointer type
+            Preferences.setPointerImage(this, Preferences.POINTER_CUSTOM)
+            updatePointerImageDisplay()
+            updateCustomPointerStatus()
+            notifySettingsChanged()
+        }
+    }
+    
+    private val customTrackpadPicker = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        uri?.let {
+            // Persist permission
+            contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            Preferences.setCustomTrackpadUri(this, it.toString())
+            updateCustomTrackpadStatus()
+            notifySettingsChanged()
+        }
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +112,21 @@ class SettingsActivity : AppCompatActivity() {
         // Pointer Image Selection
         binding.pointerImageCard.setOnClickListener {
             showPointerImageDialog()
+        }
+        
+        // Custom Pointer Image
+        binding.customPointerBtn.setOnClickListener {
+            customPointerPicker.launch(arrayOf("image/*"))
+        }
+        binding.customPointerClearBtn.setOnClickListener {
+            Preferences.setCustomPointerUri(this, null)
+            // Reset to default if currently using custom
+            if (Preferences.getPointerImage(this) == Preferences.POINTER_CUSTOM) {
+                Preferences.setPointerImage(this, Preferences.POINTER_DEFAULT)
+                updatePointerImageDisplay()
+            }
+            updateCustomPointerStatus()
+            notifySettingsChanged()
         }
         
         // Virtual Trackpad Settings
@@ -217,6 +262,16 @@ class SettingsActivity : AppCompatActivity() {
             Preferences.setTrackpadTwoFingerDrag(this, isChecked)
             notifySettingsChanged()
         }
+        
+        // Custom Trackpad Image
+        binding.customTrackpadBtn.setOnClickListener {
+            customTrackpadPicker.launch(arrayOf("image/*"))
+        }
+        binding.customTrackpadClearBtn.setOnClickListener {
+            Preferences.setCustomTrackpadUri(this, null)
+            updateCustomTrackpadStatus()
+            notifySettingsChanged()
+        }
     }
     
     private fun setupKeyboardSettings() {
@@ -298,6 +353,10 @@ class SettingsActivity : AppCompatActivity() {
         binding.trackpadDragSwitch.isChecked = Preferences.getTrackpadShowDrag(this)
         binding.trackpadTwoFingerDragSwitch.isChecked = Preferences.getTrackpadTwoFingerDrag(this)
         
+        // Custom images
+        updateCustomPointerStatus()
+        updateCustomTrackpadStatus()
+        
         // Key bindings
         binding.toggleKeyValue.text = Preferences.getKeyName(Preferences.getToggleKeycode(this))
         binding.clickKeyValue.text = Preferences.getKeyName(Preferences.getClickKeycode(this))
@@ -332,9 +391,32 @@ class SettingsActivity : AppCompatActivity() {
             Preferences.POINTER_CHEESE -> getString(R.string.pointer_cheese)
             Preferences.POINTER_DOT -> getString(R.string.pointer_dot)
             Preferences.POINTER_HAND -> getString(R.string.pointer_hand)
+            Preferences.POINTER_CUSTOM -> getString(R.string.pointer_custom)
             else -> getString(R.string.pointer_default)
         }
         binding.pointerImageValue.text = imageName
+    }
+    
+    private fun updateCustomPointerStatus() {
+        val uri = Preferences.getCustomPointerUri(this)
+        if (uri != null) {
+            binding.customPointerStatus.text = getString(R.string.image_set)
+            binding.customPointerClearBtn.visibility = View.VISIBLE
+        } else {
+            binding.customPointerStatus.text = getString(R.string.no_image)
+            binding.customPointerClearBtn.visibility = View.GONE
+        }
+    }
+    
+    private fun updateCustomTrackpadStatus() {
+        val uri = Preferences.getCustomTrackpadUri(this)
+        if (uri != null) {
+            binding.customTrackpadStatus.text = getString(R.string.image_set)
+            binding.customTrackpadClearBtn.visibility = View.VISIBLE
+        } else {
+            binding.customTrackpadStatus.text = getString(R.string.no_image)
+            binding.customTrackpadClearBtn.visibility = View.GONE
+        }
     }
     
     private fun updateTrackpadColorDisplay() {
@@ -376,14 +458,28 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     private fun showPointerImageDialog() {
-        val options = arrayOf(
-            getString(R.string.pointer_default),
-            getString(R.string.pointer_cheese),
-            getString(R.string.pointer_dot),
-            getString(R.string.pointer_hand)
-        )
+        val hasCustomImage = Preferences.getCustomPointerUri(this) != null
         
-        val currentSelection = Preferences.getPointerImage(this)
+        val options = if (hasCustomImage) {
+            arrayOf(
+                getString(R.string.pointer_default),
+                getString(R.string.pointer_cheese),
+                getString(R.string.pointer_dot),
+                getString(R.string.pointer_hand),
+                getString(R.string.pointer_custom)
+            )
+        } else {
+            arrayOf(
+                getString(R.string.pointer_default),
+                getString(R.string.pointer_cheese),
+                getString(R.string.pointer_dot),
+                getString(R.string.pointer_hand)
+            )
+        }
+        
+        val currentSelection = Preferences.getPointerImage(this).let {
+            if (!hasCustomImage && it == Preferences.POINTER_CUSTOM) 0 else it
+        }
         
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.pointer_image))

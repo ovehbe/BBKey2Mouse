@@ -208,34 +208,93 @@
                         android:layout_marginVertical="8dp" />
 
                     <!-- Pointer Image -->
-                    <LinearLayout
-                        android:id="@+id/pointerImageCard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="16dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:id="@+id/pointerImageCard"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/pointer_image"
-                            android:textSize="16sp"
-                            android:textColor="@color/on_surface" />
+                            android:orientation="horizontal"
+                            android:paddingVertical="16dp"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true">
 
-                        <TextView
-                            android:id="@+id/pointerImageValue"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/pointer_image"
+                                android:textSize="16sp"
+                                android:textColor="@color/on_surface" />
+
+                            <TextView
+                                android:id="@+id/pointerImageValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Default Arrow"
+                                android:textSize="14sp"
+                                android:textColor="@color/accent"
+                                android:layout_gravity="center_vertical" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke"
+                            android:layout_marginVertical="8dp" />
+
+                        <!-- Custom Pointer Image -->
+                        <LinearLayout
+                            android:id="@+id/customPointerCard"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Default Arrow"
-                            android:textSize="14sp"
-                            android:textColor="@color/accent"
-                            android:layout_gravity="center_vertical" />
+                            android:orientation="horizontal"
+                            android:paddingVertical="12dp"
+                            android:gravity="center_vertical">
 
-                    </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/custom_pointer_image"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:id="@+id/customPointerStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/no_image"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/on_surface_dim"
+                                    android:layout_marginTop="2dp" />
+
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/customPointerClearBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="@string/clear_image"
+                                android:textSize="12sp"
+                                android:visibility="gone"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_marginEnd="8dp" />
+
+                            <Button
+                                android:id="@+id/customPointerBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="@string/select_image"
+                                android:textSize="12sp"
+                                style="@style/Widget.Material3.Button.TonalButton" />
+
+                        </LinearLayout>
 
                 </LinearLayout>
 
@@ -667,6 +726,64 @@
                                 android:layout_height="wrap_content"
                                 app:thumbTint="@color/accent"
                                 app:trackTint="@color/surface_variant" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/card_stroke" />
+
+                        <!-- Custom Trackpad Image -->
+                        <LinearLayout
+                            android:id="@+id/customTrackpadCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="12dp"
+                            android:gravity="center_vertical">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/custom_trackpad_image"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/on_surface" />
+
+                                <TextView
+                                    android:id="@+id/customTrackpadStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/no_image"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/on_surface_dim"
+                                    android:layout_marginTop="2dp" />
+
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/customTrackpadClearBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="@string/clear_image"
+                                android:textSize="12sp"
+                                android:visibility="gone"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_marginEnd="8dp" />
+
+                            <Button
+                                android:id="@+id/customTrackpadBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="@string/select_image"
+                                android:textSize="12sp"
+                                style="@style/Widget.Material3.Button.TonalButton" />
 
                         </LinearLayout>
 

@@ -46,6 +46,17 @@
     <string name="pointer_cheese">Cheese 🧀</string>
     <string name="pointer_dot">Simple Dot</string>
     <string name="pointer_hand">Hand Pointer</string>
+    <string name="pointer_custom">Custom Image</string>
+    
+    <!-- Custom images -->
+    <string name="custom_pointer_image">Custom Pointer Image</string>
+    <string name="custom_pointer_image_summary">Select an image to use as cursor</string>
+    <string name="custom_trackpad_image">Custom Trackpad Image</string>
+    <string name="custom_trackpad_image_summary">Overlay image on the trackpad</string>
+    <string name="select_image">Select Image</string>
+    <string name="clear_image">Clear</string>
+    <string name="image_set">Image set</string>
+    <string name="no_image">None</string>
     
     <!-- Keys -->
     <string name="key_space">Space</string>

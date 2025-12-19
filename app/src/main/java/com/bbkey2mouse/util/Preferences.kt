@@ -34,12 +34,15 @@ object Preferences {
     private const val KEY_TRACKPAD_SHOW_DRAG = "trackpad_show_drag"
     private const val KEY_TRACKPAD_ROUNDING = "trackpad_rounding"
     private const val KEY_TRACKPAD_TWO_FINGER_DRAG = "trackpad_two_finger_drag"
+    private const val KEY_CUSTOM_POINTER_URI = "custom_pointer_uri"
+    private const val KEY_CUSTOM_TRACKPAD_URI = "custom_trackpad_uri"
     
     // Pointer image options
     const val POINTER_DEFAULT = 0
     const val POINTER_CHEESE = 1
     const val POINTER_DOT = 2
     const val POINTER_HAND = 3
+    const val POINTER_CUSTOM = 4
     
     // Input mode options
     const val INPUT_MODE_VIRTUAL = 0
@@ -287,6 +290,30 @@ object Preferences {
     
     fun setTrackpadTwoFingerDrag(context: Context, enabled: Boolean) {
         getPrefs(context).edit { putBoolean(KEY_TRACKPAD_TWO_FINGER_DRAG, enabled) }
+    }
+    
+    // Custom Pointer Image URI
+    fun getCustomPointerUri(context: Context): String? {
+        return getPrefs(context).getString(KEY_CUSTOM_POINTER_URI, null)
+    }
+    
+    fun setCustomPointerUri(context: Context, uri: String?) {
+        getPrefs(context).edit { 
+            if (uri == null) remove(KEY_CUSTOM_POINTER_URI)
+            else putString(KEY_CUSTOM_POINTER_URI, uri) 
+        }
+    }
+    
+    // Custom Trackpad Image URI (mask/overlay)
+    fun getCustomTrackpadUri(context: Context): String? {
+        return getPrefs(context).getString(KEY_CUSTOM_TRACKPAD_URI, null)
+    }
+    
+    fun setCustomTrackpadUri(context: Context, uri: String?) {
+        getPrefs(context).edit { 
+            if (uri == null) remove(KEY_CUSTOM_TRACKPAD_URI)
+            else putString(KEY_CUSTOM_TRACKPAD_URI, uri) 
+        }
     }
     
     // Helper to get key name
